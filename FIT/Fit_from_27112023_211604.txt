@@ -1,0 +1,22 @@
+[[Fit Statistics]]
+    # fitting method   = leastsq
+    # function evals   = 22000
+    # data points      = 1499
+    # variables        = 10
+    chi-square         = 3484836.99
+    reduced chi-square = 2340.38750
+    Akaike info crit   = 11639.3161
+    Bayesian info crit = 11692.4416
+##  Warning: uncertainties could not be estimated:
+[[Variables]]
+    xoff:         -1.77962903 (init = 0)
+    sat_xoff:      3.47282344 (init = 0)
+    shake_amp_K1:  276.790539 (init = 1)
+    shake_amp_L2:  123.110464 (init = 1)
+    shake_amp_M1:  842.756431 (init = 1)
+    shake_amp_N1:  377.945362 (init = 1)
+    shake_amp_O1:  593.882208 (init = 1)
+    yoff:          28.9900684 (init = 0)
+    res:           1.06103422 (init = 1)
+    ytot_max:      3.34948242 (init = 3.228618)
+Total theoretical intensity multiplier for the amplitude parameters: 3.276088781002604

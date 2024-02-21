@@ -1,0 +1,291 @@
+"""
+Module that implements the spectra simulations.
+First we search and read all the required files to simulate the selected element, as well as all charge states if they exist.
+Second we initialize the Tkinter interface. In this initialization all the functions that calculate and plot the simulated spectrum are bound to interface variables and buttons.
+"""
+
+from __future__ import annotations
+
+#GUI message box for CS missmatch warning
+from tkinter import messagebox
+from tkinter import Tk
+
+#OS Imports for files paths
+import os
+from pathlib import Path  ## perimite criar os caminhos
+
+#Data Imports for variable management
+import data.variables as generalVars
+
+#File IO Imports
+from utils.misc.fileIO import readRates, readIonizationEnergies, readWidths, readMeanR, readELAMelement
+from utils.misc.fileIO import searchChargeStates, readChargeStates, readIonPop, readShake
+
+
+#GUI utils for interface setup
+from interface.binds import on_key_event, enter_function
+from interface.initializers import configureSimuPlot, configureButtonArea, setupButtonArea, setupMenus, setupVars
+
+from typing import List
+
+
+def simulateSpectra(dir_path: Path, element: List[int | str], parent: Tk):
+    """
+    Function to run the simulations interface
+        
+        Args:
+            dir_path: full path to the location where the application is ran
+            element: list with the [z value, element name] to simulate
+            parent: parent tkinter window object where we will bind the new interface
+        
+        Returns:
+            Nothing, we just setup the interface and all commands are bound and performed through the interface
+    """
+    # ----------------------------------------------------------------------------------------------#
+    #                                                                                               #
+    #                   INITIALIZE AND READ DATA FROM THE PREDEFINED FILES                          #
+    #                                                                                               #
+    #-----------------------------------------------------------------------------------------------#
+    
+    # Retrieve the z and name of the element to simulate
+    z: int = element[0] # type: ignore
+    """
+    Variable with the z value of the element to simulate
+    """
+    element_name: str = element[1] # type: ignore
+    """
+    Variable with the element name to simulate
+    """
+    
+    # Initialize the element name for the functions module
+    generalVars.element_name = element_name
+    generalVars.Z = z
+    
+    
+    # Path to the radiative rates file for this element
+    radrates_file = dir_path / str(z) / (str(z) + '-intensity.out')
+    """
+    Variable with the full path to the radiative rates file of this element
+    """
+    # Read the rates file
+    generalVars.lineradrates = readRates(radrates_file)
+
+    
+    # Path to the satellite rates file for this element
+    satellites_file = dir_path / str(z) / (str(z) + '-satinty.out')
+    """
+    Variable with the full path to the satellite rates file of this element
+    """
+    # Read the rates file
+    generalVars.linesatellites = readRates(satellites_file)
+
+    
+    # Path to the auger rates file for this element
+    augrates_file = dir_path / str(z) / (str(z) + '-augrate.out')
+    """
+    Variable with the full path to the auger rates file of this element
+    """
+    # Read the rates file
+    generalVars.lineauger = readRates(augrates_file)
+
+    
+    # Path to the shake-up file for this element
+    shakeup_file = dir_path / str(z) / (str(z) + '-shakeup.out')
+    """
+    Variable with the full path to the shake-up file of this element
+    """
+    # Read the shake-up file
+    generalVars.shakeup, _ = readShake(shakeup_file)
+
+    
+    # Path to the shake-up rates file for this element
+    shakeuprates_file = dir_path / str(z) / (str(z) + '-shakeupinty.out')
+    """
+    Variable with the full path to the shake-up rates file of this element
+    """
+    # Read the rates file
+    generalVars.lineshakeup = readRates(shakeuprates_file)
+    
+    if generalVars.lineshakeup is None:
+        generalVars.Shakeup_exists = False
+    else:
+        generalVars.Shakeup_exists = True
+    
+    
+    # Path to the shake-off file for this element
+    shakeoff_file = dir_path / str(z) / (str(z) + '-shakeoff.out')
+    """
+    Variable with the full path to the shake-off file of this element
+    """
+    # Read the shake-off file
+    generalVars.shakeoff, generalVars.label1 = readShake(shakeoff_file)
+
+    
+    # Path to the 1 hole ionization energies energies file for this element
+    ioniz_file = dir_path / str(z) / (str(z) + '-grounddiagenergy.out')
+    """
+    Variable with the full path to the 1 hole ionization energies file of this element
+    """
+    # Read the ionization energies energies file
+    generalVars.ionizationsrad = readIonizationEnergies(ioniz_file)
+    
+    
+    # Path to the 2 hole ionization energies energies file for this element
+    ioniz_file = dir_path / str(z) / (str(z) + '-groundsatenergy.out')
+    """
+    Variable with the full path to the 2 hole ionization energies file of this element
+    """
+    # Read the ionization energies energies file
+    generalVars.ionizationssat = readIonizationEnergies(ioniz_file)
+    
+    
+    # Path to the 2 hole ionization energies energies file for this element
+    ioniz_file = dir_path / str(z) / (str(z) + '-groundshakeupenergy.out')
+    """
+    Variable with the full path to the shake-up ionization energies file of this element
+    """
+    # Read the ionization energies energies file
+    generalVars.ionizationsshakeup = readIonizationEnergies(ioniz_file)
+    
+    
+    # Path to the diagram rates with partial widths file for this element
+    radrateswidths_file = dir_path / str(z) / (str(z) + '-radrate.out')
+    """
+    Variable with the full path to the diagram rates with partial widths file for this element
+    """
+    # Read the diagram rates file
+    generalVars.diagramwidths = readWidths(radrateswidths_file)
+    
+    
+    # Path to the auger rates with partial widths file for this element
+    augrateswidths_file = dir_path / str(z) / (str(z) + '-augerrate.out')
+    """
+    Variable with the full path to the auger rates with partial widths file for this element
+    """
+    # Read the auger rates file
+    generalVars.augerwidths = readWidths(augrateswidths_file)
+    
+    
+    # Path to the satellite rates with partial widths file for this element
+    satrateswidths_file = dir_path / str(z) / (str(z) + '-satrate.out')
+    """
+    Variable with the full path to the satellite rates with partial widths file for this element
+    """
+    # Read the satellite rates file
+    generalVars.satellitewidths = readWidths(satrateswidths_file)
+    
+    
+    # Path to the satellite rates with partial widths file for this element
+    shakeuprateswidths_file = dir_path / str(z) / (str(z) + '-shakeuprates.out')
+    """
+    Variable with the full path to the shake-up rates with partial widths file for this element
+    """
+    # Read the satellite rates file
+    generalVars.shakeupwidths = readWidths(shakeuprateswidths_file)
+    
+    
+    # Path to the mean radius file for this element
+    meanRs_file = dir_path / str(z) / (str(z) + '-meanR.out')
+    """
+    Variable with the full path to the mean radius file for this element
+    """
+    # Read the mean radius file
+    generalVars.meanRs = readMeanR(meanRs_file)
+    
+    
+    # Path to the ELAM database file
+    ELAM_file = dir_path / ('ElamDB12.txt')
+    """
+    Variable with the full path ELAM database file
+    """
+    # Read the ELAM database File
+    generalVars.ELAMelement = readELAMelement(ELAM_file, z)
+    
+    # Variable to active or deactivate the charge state simulation in the interface menu
+    CS_exists = False
+    """
+    Variable to control if this element has transition rates for different charge states
+    """
+    
+    # Check if the charge states folder exists in the element folder
+    if os.path.isdir(dir_path / str(z) / 'Charge_States'):
+        CS_exists = True
+        
+        # Search for the existing radiative files inside the charge states folder
+        generalVars.radiative_files = searchChargeStates(dir_path, z, '-intensity_')
+        # Load the raw data from the found files and the order in which they were loaded
+        generalVars.lineradrates_PCS, generalVars.lineradrates_NCS, generalVars.rad_PCS, generalVars.rad_NCS = readChargeStates(generalVars.radiative_files, dir_path, z)
+
+        # Search for the existing auger files inside the charge states folder
+        generalVars.auger_files = searchChargeStates(dir_path, z, '-augrate_')
+        # Load the raw data from the found files and the order in which they were loaded
+        generalVars.lineaugrates_PCS, generalVars.lineaugrates_NCS, generalVars.aug_PCS, generalVars.aug_NCS = readChargeStates(generalVars.auger_files, dir_path, z)
+
+        # Search for the existing satellite files inside the charge states folder
+        generalVars.sat_files = searchChargeStates(dir_path, z, '-satinty_')
+        # Load the raw data from the found files and the order in which they were loaded
+        generalVars.linesatellites_PCS, generalVars.linesatellites_NCS, generalVars.sat_PCS, generalVars.sat_NCS = readChargeStates(generalVars.sat_files, dir_path, z)
+
+
+        # Check for a missmatch in the read radiative and satellite files.
+        # There should be 1 satellite for each radiative file if you want to simulate a full rad + sat spectrum
+        # Otherwise, if you know what you are doing just ignore the warning
+        if len(generalVars.linesatellites_NCS) != len(generalVars.lineradrates_NCS) or len(generalVars.linesatellites_PCS) != len(generalVars.lineradrates_PCS):
+            messagebox.showwarning("Warning", "Missmatch of radiative and satellite files for Charge State mixture: " + str(len(generalVars.lineradrates_NCS) + len(generalVars.lineradrates_PCS)) + " radiative and " + str(len(generalVars.linesatellites_NCS) + len(generalVars.linesatellites_PCS)) + " satellite files found.")
+
+        # Path to the ion population file file for this element
+        ionpop_file = dir_path / str(z) / (str(z) + '-ionpop.out')
+        """
+        Variable with the full path to the ion population file of this element
+        """
+        # Check if the ion population data exists and load it
+        generalVars.Ionpop_exists, generalVars.ionpopdata = readIonPop(ionpop_file)
+
+    
+    
+    # ----------------------------------------------------------------------------------------------#
+    #                                                                                               #
+    #                                  INITIALIZE GUI ELEMENTS                                      #
+    #                                                                                               #
+    #-----------------------------------------------------------------------------------------------#
+    
+    # Setup the variables to use in the GUI entries
+    setupVars(parent)
+    
+    # Initialize the main simulation window, with the main plot inside
+    sim, panel_1, f, a, figure_frame, canvas = configureSimuPlot()
+    """
+    sim: variable to hold the tkinter simulation window object.
+    panel_1: panel object that holds the matplotlib graph in the interface.
+    f: matplotlib figure object where the graph will be displayed.
+    a: matplotlib plot object where we can plot the data.
+    figure_frame: frame that is placed inside the panel_1 object where the figure will be placed.
+    canvas: tkinter object created from the matplotlib figure which is required to place the figure in the interface.
+    """
+    # Initialize the remaining panels containing the buttons and configuration entries for the simulation
+    panel_2, toolbar_frame, toolbar, full_frame, buttons_frame, buttons_frame2, buttons_frame3, buttons_frame4 = configureButtonArea(sim, canvas)
+    """
+    panel_2: panel object that holds the controls placed below the graph
+    toolbar_frame: frame that holds the toolbar buttons for the matplotlib plot
+    toolbar: default toolbar buttons for the matplotlib plot
+    full_frame: full frame for the button area to configure the simulations
+    buttons_frame: frame for the transition dropdown
+    buttons_frame2: frame for the simulation bounds and number of points
+    buttons_frame3: frame for the yoffset, energy offset and calculate
+    buttons_frame4: frame for the progress bar
+    """
+    # Finish the button area setup and bind the variables to the GUI elements
+    setupButtonArea(buttons_frame, buttons_frame2, buttons_frame3, buttons_frame4)
+    
+    # Bind the default matplotlib shortcuts
+    canvas.mpl_connect('key_press_event', on_key_event)
+
+    # Bind to run calculate when pressing enter
+    sim.bind('<Return>', func=str(enter_function))
+    
+    # Setup the dropdown menus on the toolbar on the top of the window
+    setupMenus(CS_exists)
+    
+    # ---------------------------------------------------------------------------------------------------------------
+    # Initialize the main loop of the tk window (Enables the user interaction with the GUI)
+    sim.mainloop()

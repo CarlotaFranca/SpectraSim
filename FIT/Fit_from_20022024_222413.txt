@@ -1,0 +1,41 @@
+[[Minuit Fit Statistics]]
+fitting method = template_nll_asy
+Valid Minimum = True
+Funcion value at minimum = 19904.447190967236
+covariance matrix accurate = True
+data points = 1501
+variabels = 5
+[[Variables]]
+xoff = -1.4169653871994212, Hesse Err = 0.005704323488083585,0.004025732413519265% , limits = (-7.297388300000012, 7.297388300000012)
+sat_xoff = 5.099641859577643, Hesse Err = 0.6712631216399929,0.1316294634258076% , limits = (-7.297388300000012, 7.297388300000012)
+yoff = 141.2757486957068, Hesse Err = 0.7064637357812842,0.005000601605749995% , limits = (-251.25, 251.25)
+res = 1.60675246681962, Hesse Err = 0.013653213643005091,0.008497397032182588% , limits = (0.01, 4.0)
+ytot_max = 2.2690391574743836, Hesse Err = 0.004964345890765776,0.002187862591270341% , limits = (0.0, inf)
+[[Correlations]]
+C(xoff,xoff) = 3.253931334404346e-05
+C(xoff,sat_xoff) = 2.6741273655940157e-06
+C(xoff,yoff) = -0.0004253769503470365
+C(xoff,res) = 1.80498076133248e-05
+C(xoff,ytot_max) = -2.3238410560288876e-06
+C(sat_xoff,xoff) = 2.6741273655940157e-06
+C(sat_xoff,sat_xoff) = 0.4531003417811653
+C(sat_xoff,yoff) = -0.009193441817553048
+C(sat_xoff,res) = -2.396020728571294e-05
+C(sat_xoff,ytot_max) = -3.212349984861334e-05
+C(yoff,xoff) = -0.0004253769503470365
+C(yoff,sat_xoff) = -0.009193441817553048
+C(yoff,yoff) = 0.49909293342785443
+C(yoff,res) = -0.004112384418258936
+C(yoff,ytot_max) = 0.0014188669010515448
+C(res,xoff) = 1.80498076133248e-05
+C(res,sat_xoff) = -2.396020728571294e-05
+C(res,yoff) = -0.004112384418258936
+C(res,res) = 0.00018641327391020934
+C(res,ytot_max) = -2.341723333257924e-05
+C(ytot_max,xoff) = -2.3238410560288876e-06
+C(ytot_max,sat_xoff) = -3.212349984861334e-05
+C(ytot_max,yoff) = 0.0014188669010515448
+C(ytot_max,res) = -2.341723333257924e-05
+C(ytot_max,ytot_max) = 2.464473599044422e-05
+
+Total theoretical intensity multiplier for the amplitude parameters: 2.150704333548122

@@ -1,0 +1,7 @@
+[[Minuit Fit Statistics]]
+fitting method = template_nll_asy
+Valid Minimum: True
+covariance matrix accurate: True
+data points: 1501
+
+Total theoretical intensity multiplier for the amplitude parameters: 2.1507043321783064

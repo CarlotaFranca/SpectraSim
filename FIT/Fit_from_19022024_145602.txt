@@ -1,0 +1,17 @@
+[[Fit Statistics]]
+    # fitting method   = leastsq
+    # function evals   = 49
+    # data points      = 1499
+    # variables        = 5
+    chi-square         = 20318392.9
+    reduced chi-square = 13599.9953
+    Akaike info crit   = 14272.2109
+    Bayesian info crit = 14298.7737
+##  Warning: uncertainties could not be estimated:
+[[Variables]]
+    xoff:     -1.58167526 (init = 0)
+    sat_xoff:  0.00000000 (init = 0)
+    yoff:      158.991778 (init = 0)
+    res:       1.67491376 (init = 1)
+    ytot_max:  2.22542440 (init = 2.51457)
+Total theoretical intensity multiplier for the amplitude parameters: 2.1070091917489835

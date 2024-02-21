@@ -1,0 +1,25 @@
+[[Fit Statistics]]
+    # fitting method   = leastsq
+    # function evals   = 2307
+    # data points      = 1499
+    # variables        = 5
+    chi-square         = 20675003.2
+    reduced chi-square = 13838.6902
+    Akaike info crit   = 14298.2918
+    Bayesian info crit = 14324.8546
+[[Variables]]
+    xoff:     -1.58206928 +/- 0.00926381 (0.59%) (init = 0)
+    sat_xoff:  4.82414261 +/- 33.6376722 (697.28%) (init = 0)
+    yoff:      145.527856 +/- 3.91718412 (2.69%) (init = 0)
+    res:       1.66117810 +/- 0.02842134 (1.71%) (init = 1)
+    ytot_max:  2.23814163 +/- 0.01187045 (0.53%) (init = 2.521962)
+[[Correlations]] (unreported correlations are < 0.100)
+    C(res, ytot_max)      = -0.7726
+    C(yoff, ytot_max)     = +0.5363
+    C(yoff, res)          = -0.4762
+    C(sat_xoff, ytot_max) = -0.4496
+    C(sat_xoff, yoff)     = -0.3285
+    C(xoff, sat_xoff)     = +0.2971
+    C(sat_xoff, res)      = +0.2660
+    C(xoff, ytot_max)     = -0.1355
+Total theoretical intensity multiplier for the amplitude parameters: 2.121062273525742

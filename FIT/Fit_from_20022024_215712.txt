@@ -1,0 +1,14 @@
+[[Minuit Fit Statistics]]
+fitting method = template_nll_asy
+Valid Minimum: True
+covariance matrix accurate: True
+data points: 1501
+variabels: 5
+[[Variables]]
+xoff: -1.41696538737893 +/- 0.005704315157553541
+, limits = (-7.297388300000012, 7.297388300000012)sat_xoff: 5.099641852341801 +/- 0.6712624607128355
+, limits = (-7.297388300000012, 7.297388300000012)yoff: 141.27574863097544 +/- 0.706461817049501
+, limits = (-251.25, 251.25)res: 1.6067524678871816 +/- 0.013653153425934983
+, limits = (0.01, 4.0)ytot_max: 2.2690391573145017 +/- 0.0049643359421747135
+, limits = (0.0, inf)
+Total theoretical intensity multiplier for the amplitude parameters: 2.1507043329823343

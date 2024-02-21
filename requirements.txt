@@ -1,0 +1,7 @@
+tk
+numpy
+scipy
+lmfit
+matplotlib
+plotly
+mplcursors
